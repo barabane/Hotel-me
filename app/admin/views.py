@@ -9,7 +9,7 @@ class UsersAdmin(ModelView, model=Users):
     name = "Пользователь"
     name_plural = "Пользователи"
     column_list = [Users.id, Users.email]
-    column_details_list = [Users.id, Users.email]
+    column_details_list = [Users.id, Users.email, Users.booking]
     can_delete = False
 
 

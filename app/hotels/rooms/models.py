@@ -1,6 +1,12 @@
 from app.database import Base
-from sqlalchemy import JSON, ForeignKey, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import JSON, ForeignKey, Integer
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from app.hotels.models import Hotels
+    from app.bookings.models import Bookings
 
 
 class Rooms(Base):
@@ -14,3 +20,9 @@ class Rooms(Base):
     services: Mapped[dict] = mapped_column(JSON)
     quantity: Mapped[int] = mapped_column(nullable=False)
     image_id: Mapped[int]
+
+    hotel: Mapped["Hotels"] = relationship(back_populates="rooms")
+    bookings: Mapped[list["Bookings"]] = relationship(back_populates="room")
+
+    def __str__(self) -> str:
+        return f"Комната #{self.id}"
