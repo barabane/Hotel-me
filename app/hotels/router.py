@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends
 from app.hotels.dao import HotelDAO
 from app.hotels.schemas import SchemaHotelsDateFromTo
+from app.hotels.exceptions import DateFromBiggerDateToException, TooLongBookingException
 from fastapi_cache.decorator import cache
+from datetime import timedelta
 
 router = APIRouter(
     prefix="/hotels",
@@ -11,7 +13,11 @@ router = APIRouter(
 
 @router.get("/{location}")
 @cache(expire=30)
-async def get_hotel(location: str, dates=Depends(SchemaHotelsDateFromTo)):
+async def get_hotel(location: str, dates: SchemaHotelsDateFromTo = Depends(SchemaHotelsDateFromTo)):
+    if dates.date_from >= dates.date_to:
+        raise DateFromBiggerDateToException
+    elif dates.date_from - timedelta(days=dates.date_to.day) > 30:
+        raise TooLongBookingException
     return await HotelDAO.find_not_empty_hotels(location, dates.date_from, dates.date_to)
 
 

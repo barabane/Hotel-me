@@ -36,6 +36,6 @@ class BaseDAO:
     @classmethod
     async def delete(cls, model_id: int):
         async with async_session_maker() as session:
-            query = delete(cls.model).where(cls.model.c.id == model_id)
+            query = delete(cls.model).where(cls.model.id == model_id)
             await session.execute(query)
             await session.commit()

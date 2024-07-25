@@ -20,7 +20,11 @@ async def get_all(user: Users = Depends(get_current_user)):
 
 @router.get("/{id}")
 async def get_one(id: int) -> SchemaBooking:
-    return await BookingsDAO.find_by_id(id)
+    booking = await BookingsDAO.find_by_id(id)
+
+    if not booking:
+        raise BookingDoesNotExists
+    return booking
 
 
 @router.delete("/{booking_id}")
@@ -35,7 +39,7 @@ async def delete_booking(booking_id: int, user: Users = Depends(get_current_user
 
 
 @router.post("/add")
-async def add_booking(room_id: int, dates: SchemaBookingDatesFromTo, user: Users = Depends(get_current_user)) -> SchemaBooking:
+async def add_booking(room_id: int, dates: SchemaBookingDatesFromTo = Depends(SchemaBookingDatesFromTo), user: Users = Depends(get_current_user)) -> SchemaBooking:
     booking: SchemaBooking | None = await BookingsDAO.add(user.id, room_id, dates.date_from, dates.date_to)
     if not booking:
         raise RoomCannotBeBooked

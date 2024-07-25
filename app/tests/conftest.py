@@ -9,6 +9,8 @@ from app.hotels.rooms.models import Rooms
 from app.users.models import Users
 from config import settings
 from app.database import engine, async_session_maker, Base
+from httpx import ASGITransport, AsyncClient
+from app.main import app as fastapi_app
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -48,7 +50,24 @@ async def prepare_database():
 
 
 @pytest.fixture(scope="session")
-def event_loop():
+def event_loop_func():
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
+
+
+@pytest.fixture(scope="function")
+async def ac():
+    async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
+        yield ac
+
+
+@pytest.fixture(scope="session")
+async def authenticated_user():
+    async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
+        await ac.post("/users/login", params={
+            "email": "test@test.com",
+            "password": "test",
+        })
+        assert ac.cookies["user_access_token"]
+        yield ac
