@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block title %}Смена пароля{% endblock %} {% block
+content %}
+<h1>Сменить пароль</h1>
+<form
+  action="/users/reset-password?access_token={{access_token}}"
+  method="POST"
+>
+  <input type="text" placeholder="Новый пароль" name="password" />
+  <button type="submit">Сменить</button>
+</form>
+{% endblock %}
