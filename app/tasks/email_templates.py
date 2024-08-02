@@ -48,3 +48,19 @@ def checkin_reminder_template(booking: dict, email_to: EmailStr, days: int):
         subtype="html"
     )
     return email
+
+
+def recover_email_template(email_to: EmailStr, access_token):
+    email = EmailMessage()
+    email["Subject"] = f"Восстановление пароля"
+    email["From"] = settings.SMTP_USER
+    email["To"] = email_to
+
+    email.set_content(
+        f"""
+            <h1>Восстановление пароля</h1>
+            <p>Перейдите по ссылке для восстановления пароля http://127.0.0.1:8000/pages/recover?access_token={access_token}</p>
+        """,
+        subtype="html"
+    )
+    return email

@@ -2,7 +2,7 @@ from pydantic import EmailStr
 from app.tasks.celery_config import celery_app as celery
 from PIL import Image
 from pathlib import Path
-from app.tasks.email_templates import create_booking_confirmation_template, registry_confirmation_template
+from app.tasks.email_templates import create_booking_confirmation_template, registry_confirmation_template, recover_email_template
 from config import settings
 from smtplib import SMTP_SSL
 
@@ -31,6 +31,14 @@ def send_booking_confirmation_email(booking: dict, email_to: EmailStr):
 @celery.task
 def confirm_registry(email_to: EmailStr):
     msg_content = registry_confirmation_template(email_to)
+    with SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT) as server:
+        server.login(settings.SMTP_USER, settings.SMTP_PASS)
+        server.send_message(msg_content)
+
+
+@celery.task
+def send_recover_email(email_to: EmailStr, access_token):
+    msg_content = recover_email_template(email_to, access_token)
     with SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT) as server:
         server.login(settings.SMTP_USER, settings.SMTP_PASS)
         server.send_message(msg_content)
