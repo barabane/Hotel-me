@@ -3,17 +3,17 @@ from datetime import date
 from fastapi import APIRouter, Depends, Response
 
 from app.bookings.dao import BookingsDAO
-from app.bookings.exceptions import (BookingCantDelete, BookingDoesNotExists,
-                                     RoomCannotBeBooked)
+from app.bookings.exceptions import (
+    BookingCantDelete,
+    BookingDoesNotExists,
+    RoomCannotBeBooked,
+)
 from app.bookings.schemas import SchemaBooking, SchemaBookingDatesFromTo
 from app.tasks.tasks import send_booking_confirmation_email
 from app.users.dependencies import get_current_user
 from app.users.models import Users
 
-router = APIRouter(
-    prefix="/bookings",
-    tags=["Бронирование"]
-)
+router = APIRouter(prefix="/bookings", tags=["Бронирование"])
 
 
 @router.get("/")
@@ -42,8 +42,14 @@ async def delete_booking(booking_id: int, user: Users = Depends(get_current_user
 
 
 @router.post("/add")
-async def add_booking(room_id: int, dates: SchemaBookingDatesFromTo = Depends(SchemaBookingDatesFromTo), user: Users = Depends(get_current_user)) -> SchemaBooking:
-    booking: SchemaBooking | None = await BookingsDAO.add(user.id, room_id, dates.date_from, dates.date_to)
+async def add_booking(
+    room_id: int,
+    dates: SchemaBookingDatesFromTo = Depends(SchemaBookingDatesFromTo),
+    user: Users = Depends(get_current_user),
+) -> SchemaBooking:
+    booking: SchemaBooking | None = await BookingsDAO.add(
+        user.id, room_id, dates.date_from, dates.date_to
+    )
     if not booking:
         raise RoomCannotBeBooked
     booking_dict = SchemaBooking.model_validate(booking).model_dump()

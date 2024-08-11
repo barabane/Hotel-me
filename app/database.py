@@ -13,10 +13,10 @@ else:
 
 engine = create_async_engine(url=DB_URL, **DATABASE_PARAMS)
 engine_nullpool = create_async_engine(
-    url=settings.DATABASE_URL, **{"poolclass": NullPool})
+    url=settings.DATABASE_URL, **{"poolclass": NullPool}
+)
 
-async_session_maker = sessionmaker(
-    engine, class_=AsyncSession, expire_on_commit=False)
+async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 nullpool_session_maker = sessionmaker(
     engine_nullpool, class_=AsyncSession, expire_on_commit=False

@@ -3,17 +3,23 @@ from datetime import datetime, timedelta
 import pytest
 
 
-@pytest.mark.parametrize("date_from, date_to", [
-    (datetime.strptime("2024-07-10", "%Y-%m-%d"),
-     datetime.strptime("2024-07-01", "%Y-%m-%d")
-     ),
-    (datetime.strptime("2024-06-20", "%Y-%m-%d"),
-     datetime.strptime("2024-07-30", "%Y-%m-%d")
-     ),
-    (datetime.strptime("2024-07-10", "%Y-%m-%d"),
-     datetime.strptime("2024-07-17", "%Y-%m-%d")
-     )
-])
+@pytest.mark.parametrize(
+    "date_from, date_to",
+    [
+        (
+            datetime.strptime("2024-07-10", "%Y-%m-%d"),
+            datetime.strptime("2024-07-01", "%Y-%m-%d"),
+        ),
+        (
+            datetime.strptime("2024-06-20", "%Y-%m-%d"),
+            datetime.strptime("2024-07-30", "%Y-%m-%d"),
+        ),
+        (
+            datetime.strptime("2024-07-10", "%Y-%m-%d"),
+            datetime.strptime("2024-07-17", "%Y-%m-%d"),
+        ),
+    ],
+)
 async def test_getting_hotels(date_from, date_to):
     if date_from >= date_to:
         assert True

@@ -20,9 +20,11 @@ from config import settings
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     redis = aioredis.from_url(
-        settings.REDIS_URL, encoding="utf8", decode_responses=True)
+        settings.REDIS_URL, encoding="utf8", decode_responses=True
+    )
     FastAPICache.init(RedisBackend(redis), prefix="cache")
     yield
+
 
 app = FastAPI(title="HotelMe", lifespan=lifespan)
 admin = Admin(app, engine)

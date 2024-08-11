@@ -33,9 +33,8 @@ async def prepare_database():
     bookings = open_mock_json("bookings")
 
     for booking in bookings:
-        booking['date_from'] = datetime.strptime(
-            booking['date_from'], "%Y-%m-%d")
-        booking['date_to'] = datetime.strptime(booking['date_to'], "%Y-%m-%d")
+        booking["date_from"] = datetime.strptime(booking["date_from"], "%Y-%m-%d")
+        booking["date_to"] = datetime.strptime(booking["date_to"], "%Y-%m-%d")
 
     async with async_session_maker() as session:
         add_hotels = insert(Hotels).values(hotels)
@@ -60,16 +59,23 @@ def event_loop_func():
 
 @pytest.fixture(scope="function")
 async def ac():
-    async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
+    async with AsyncClient(
+        transport=ASGITransport(app=fastapi_app), base_url="http://test"
+    ) as ac:
         yield ac
 
 
 @pytest.fixture(scope="session")
 async def authenticated_user():
-    async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
-        await ac.post("/users/login", params={
-            "email": "test@test.com",
-            "password": "test",
-        })
+    async with AsyncClient(
+        transport=ASGITransport(app=fastapi_app), base_url="http://test"
+    ) as ac:
+        await ac.post(
+            "/users/login",
+            params={
+                "email": "test@test.com",
+                "password": "test",
+            },
+        )
         assert ac.cookies["user_access_token"]
         yield ac

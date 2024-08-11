@@ -16,7 +16,7 @@ def create_booking_confirmation_template(booking: dict, email_to: EmailStr):
             <h1>Подтвердите бронирование</h1>
             Вы забронировали отель с {booking['date_from']} по {booking['date_to']}
         """,
-        subtype="html"
+        subtype="html",
     )
     return email
 
@@ -31,7 +31,7 @@ def registry_confirmation_template(email_to: EmailStr):
         f"""
             <h1>Подтвердите регистрацию на сайте</h1>
         """,
-        subtype="html"
+        subtype="html",
     )
     return email
 
@@ -47,7 +47,7 @@ def checkin_reminder_template(booking: dict, email_to: EmailStr, days: int):
             <h1>Напоминание о бронировании</h1>
             <p>Вы забронировали отель с {booking['date_from']} по {booking['date_to']}</p>
         """,
-        subtype="html"
+        subtype="html",
     )
     return email
 
@@ -63,6 +63,6 @@ def recover_email_template(email_to: EmailStr, access_token):
             <h1>Восстановление пароля</h1>
             <p>Перейдите по ссылке для восстановления пароля http://127.0.0.1:8000/pages/recover?access_token={access_token}</p>
         """,
-        subtype="html"
+        subtype="html",
     )
     return email

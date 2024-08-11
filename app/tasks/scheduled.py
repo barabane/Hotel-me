@@ -16,11 +16,9 @@ def tomorrow_checkin_reminder():
     bookings = async_to_sync(BookingsDAO.find_all)()
     for booking in bookings:
         if booking.date_from - date.today() == timedelta(1):
-            user = async_to_sync(
-                UserDAO.find_by_id)(booking.user_id)
+            user = async_to_sync(UserDAO.find_by_id)(booking.user_id)
             booking_dict = SchemaBooking.model_validate(booking).model_dump()
-            msg_content = checkin_reminder_template(
-                booking_dict, user.email, 1)
+            msg_content = checkin_reminder_template(booking_dict, user.email, 1)
             with SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT) as server:
                 server.login(settings.SMTP_USER, settings.SMTP_PASS)
                 server.send_message(msg_content)
@@ -33,11 +31,9 @@ def three_days_checkin_reminder():
     bookings = async_to_sync(BookingsDAO.find_all)()
     for booking in bookings:
         if booking.date_from - date.today() == timedelta(3):
-            user = async_to_sync(
-                UserDAO.find_by_id)(booking.user_id)
+            user = async_to_sync(UserDAO.find_by_id)(booking.user_id)
             booking_dict = SchemaBooking.model_validate(booking).model_dump()
-            msg_content = checkin_reminder_template(
-                booking_dict, user.email, 3)
+            msg_content = checkin_reminder_template(booking_dict, user.email, 3)
             with SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT) as server:
                 server.login(settings.SMTP_USER, settings.SMTP_PASS)
                 server.send_message(msg_content)

@@ -22,9 +22,7 @@ def create_access_token(data: dict):
     to_encode = data.copy()
     expire = datetime.now(UTC) + timedelta(minutes=30)
     to_encode.update({"exp": int(expire.timestamp())})
-    encoded_jwt = jwt.encode(
-        to_encode, settings.SECRET_HASH, settings.HASH_METHOD
-    )
+    encoded_jwt = jwt.encode(to_encode, settings.SECRET_HASH, settings.HASH_METHOD)
     return encoded_jwt
 
 
