@@ -1,4 +1,5 @@
 from jose import jwt
+
 from config import settings
 
 

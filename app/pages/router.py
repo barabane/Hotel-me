@@ -1,11 +1,12 @@
-from datetime import datetime, UTC
+from datetime import UTC, datetime
+
 from fastapi import APIRouter, Depends, Request
 from fastapi.templating import Jinja2Templates
-from app.users.exceptions import TokenExpiredException
 from jose import JWTError
-from app.utils.decode_jwt import decode_jwt
 
 from app.hotels.router import get_hotel
+from app.users.exceptions import TokenExpiredException
+from app.utils.decode_jwt import decode_jwt
 
 router = APIRouter(
     prefix="/pages",

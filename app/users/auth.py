@@ -1,7 +1,9 @@
+from datetime import UTC, datetime, timedelta
+
 from jose import jwt
-from datetime import datetime, UTC, timedelta
 from passlib.context import CryptContext
 from pydantic import EmailStr
+
 from app.users.dao import UserDAO
 from config import settings
 

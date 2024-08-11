@@ -1,8 +1,9 @@
 from datetime import date
-from app.database import Base
-from sqlalchemy import Computed, Date, Integer, ForeignKey
+
+from sqlalchemy import Computed, Date, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from app.database import Base
 from app.hotels.rooms.models import Rooms
 from app.users.models import Users
 

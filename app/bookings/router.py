@@ -1,11 +1,14 @@
 from datetime import date
+
 from fastapi import APIRouter, Depends, Response
+
 from app.bookings.dao import BookingsDAO
+from app.bookings.exceptions import (BookingCantDelete, BookingDoesNotExists,
+                                     RoomCannotBeBooked)
 from app.bookings.schemas import SchemaBooking, SchemaBookingDatesFromTo
 from app.tasks.tasks import send_booking_confirmation_email
 from app.users.dependencies import get_current_user
 from app.users.models import Users
-from app.bookings.exceptions import BookingCantDelete, BookingDoesNotExists, RoomCannotBeBooked
 
 router = APIRouter(
     prefix="/bookings",

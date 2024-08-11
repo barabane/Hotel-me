@@ -1,10 +1,14 @@
-from pydantic import EmailStr
-from app.tasks.celery_config import celery_app as celery
-from PIL import Image
 from pathlib import Path
-from app.tasks.email_templates import create_booking_confirmation_template, registry_confirmation_template, recover_email_template
-from config import settings
 from smtplib import SMTP_SSL
+
+from PIL import Image
+from pydantic import EmailStr
+
+from app.tasks.celery_config import celery_app as celery
+from app.tasks.email_templates import (create_booking_confirmation_template,
+                                       recover_email_template,
+                                       registry_confirmation_template)
+from config import settings
 
 
 @celery.task

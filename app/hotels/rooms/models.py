@@ -1,12 +1,13 @@
-from app.database import Base
-from sqlalchemy import JSON, ForeignKey, Integer
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
 
+from sqlalchemy import JSON, ForeignKey, Integer
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.database import Base
 
 if TYPE_CHECKING:
-    from app.hotels.models import Hotels
     from app.bookings.models import Bookings
+    from app.hotels.models import Hotels
 
 
 class Rooms(Base):

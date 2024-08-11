@@ -1,9 +1,12 @@
-from fastapi import APIRouter, Depends
-from app.hotels.dao import HotelDAO
-from app.hotels.schemas import SchemaHotelsDateFromTo
-from app.hotels.exceptions import DateFromBiggerDateToException, TooLongBookingException
-from fastapi_cache.decorator import cache
 from datetime import timedelta
+
+from fastapi import APIRouter, Depends
+from fastapi_cache.decorator import cache
+
+from app.hotels.dao import HotelDAO
+from app.hotels.exceptions import (DateFromBiggerDateToException,
+                                   TooLongBookingException)
+from app.hotels.schemas import SchemaHotelsDateFromTo
 
 router = APIRouter(
     prefix="/hotels",

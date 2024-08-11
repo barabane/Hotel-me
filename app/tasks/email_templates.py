@@ -1,5 +1,7 @@
 from email.message import EmailMessage
+
 from pydantic import EmailStr
+
 from config import settings
 
 

@@ -1,15 +1,18 @@
 from typing import Annotated
+
 from fastapi import APIRouter, Depends, Form, Response
 from pydantic import EmailStr
+
+from app.tasks.tasks import confirm_registry, send_recover_email
+from app.users.auth import (authenticate_user, create_access_token,
+                            get_password_hash)
+from app.users.dao import UserDAO
 from app.users.dependencies import get_current_user
-from app.users.exceptions import UserAlreadyExistsException, UserDataInvalid, UserIsNotExistsException
+from app.users.exceptions import (UserAlreadyExistsException, UserDataInvalid,
+                                  UserIsNotExistsException)
 from app.users.models import Users
 from app.users.schemas import SchemaUserAuth
-from app.users.dao import UserDAO
-from app.users.auth import create_access_token, get_password_hash, authenticate_user
-from app.tasks.tasks import confirm_registry, send_recover_email
 from app.utils.decode_jwt import decode_jwt
-
 
 router = APIRouter(
     prefix="/users",

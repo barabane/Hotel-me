@@ -1,8 +1,10 @@
-from datetime import datetime, UTC
+from datetime import UTC, datetime
+
 from fastapi import Depends, Request
 from jose import JWTError, jwt
+
 from app.users.dao import UserDAO
-from app.users.exceptions import UserIsNotExistsException, TokenExpiredException
+from app.users.exceptions import TokenExpiredException, UserIsNotExistsException
 from config import settings
 
 
@@ -15,9 +17,7 @@ def get_token(request: Request):
 
 async def get_current_user(token: str = Depends(get_token)):
     try:
-        payload = jwt.decode(
-            token, settings.SECRET_HASH, settings.HASH_METHOD
-        )
+        payload = jwt.decode(token, settings.SECRET_HASH, settings.HASH_METHOD)
     except JWTError:
         raise TokenExpiredException
     expire: str = payload.get("exp")

@@ -1,12 +1,14 @@
+from datetime import date, timedelta
 from smtplib import SMTP_SSL
+
+from asgiref.sync import async_to_sync
+
+from app.bookings.dao import BookingsDAO
 from app.bookings.schemas import SchemaBooking
 from app.tasks.celery_config import celery_app as celery
 from app.tasks.email_templates import checkin_reminder_template
-from config import settings
-from datetime import date, timedelta
-from app.bookings.dao import BookingsDAO
 from app.users.dao import UserDAO
-from asgiref.sync import async_to_sync
+from config import settings
 
 
 @celery.task(name="tomorrow_checkin_reminder")

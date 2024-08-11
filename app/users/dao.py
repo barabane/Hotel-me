@@ -1,7 +1,8 @@
 from sqlalchemy import select
+
 from app.dao.base import BaseDAO
-from app.users.models import Users
 from app.database import nullpool_session_maker
+from app.users.models import Users
 
 
 class UserDAO(BaseDAO):

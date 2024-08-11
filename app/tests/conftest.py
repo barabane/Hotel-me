@@ -1,16 +1,18 @@
 import asyncio
-from datetime import datetime
 import json
+from datetime import datetime
+
 import pytest
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy import insert
+
 from app.bookings.models import Bookings
+from app.database import Base, async_session_maker, engine
 from app.hotels.models import Hotels
 from app.hotels.rooms.models import Rooms
+from app.main import app as fastapi_app
 from app.users.models import Users
 from config import settings
-from app.database import engine, async_session_maker, Base
-from httpx import ASGITransport, AsyncClient
-from app.main import app as fastapi_app
 
 
 @pytest.fixture(scope="session", autouse=True)
